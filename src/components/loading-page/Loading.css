@@ -6,12 +6,22 @@
     inset: 0;
     width: 100vw;
     height: 100vh;
+    max-width: 100vw;
+    max-height: 100vh;
     background: #000000;
     overflow: hidden;
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+/* Modern mobile browsers: dvh accounts for the address-bar height change,
+   preventing the container from ever being taller than the real viewport. */
+@supports (height: 100dvh) {
+    .loading-container {
+        height: 100dvh;
+        max-height: 100dvh;
+    }
 }
 /* ==========================================================
    Three.js Canvas
@@ -29,12 +39,16 @@
 .loading-ui {
     position: absolute;
     left: 50%;
-    bottom: 8%;
+    bottom: clamp(6%, 8vh, 8%);
     transform: translateX(-50%);
     z-index: 10;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    max-width: 100vw;
+    padding: 0 16px;
+    box-sizing: border-box;
     pointer-events: none;
 }
 /* ==========================================================
@@ -45,9 +59,9 @@
     cursor: pointer;
     border: none;
     outline: none;
-    padding: 16px 42px;
+    padding: clamp(12px, 3vw, 16px) clamp(24px, 7vw, 42px);
     border-radius: 999px;
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 2.2vw + 0.55rem, 1rem);
     font-weight: 600;
     letter-spacing: 0.08em;
     color: #0A0E17;
@@ -64,6 +78,8 @@
         sans-serif;
     box-shadow:
         0 8px 28px rgba(0,0,0,.45);
+    max-width: 90vw;
+    white-space: nowrap;
 }
 /* ==========================================================
    Button Hover
@@ -100,22 +116,13 @@
 }
 /* ==========================================================
    Responsive
+   Button/UI sizing now uses fluid clamp() values above, so it
+   scales smoothly across phones, tablets, laptops and large
+   desktops without needing fixed breakpoints. This query only
+   guards the smallest phones (down to 320px) against overflow.
 ========================================================== */
-@media (max-width:768px){
+@media (max-width:360px){
     .enter-button{
-        padding:14px 30px;
-        font-size:.92rem;
-    }
-    .loading-ui{
-        bottom:7%;
-    }
-}
-@media (max-width:480px){
-    .enter-button{
-        padding:12px 26px;
-        font-size:.85rem;
-    }
-    .loading-ui{
-        bottom:6%;
+        letter-spacing: 0.05em;
     }
 }

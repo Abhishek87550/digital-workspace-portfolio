@@ -117,6 +117,11 @@ export class ParticleEngine {
   private spawnHalfWidth = 4;
   private spawnHalfHeight = 3;
 
+  /** Pointer hover-repulsion radius (world units), scaled to match the
+   *  current responsive content size — see setRepulsionScale(). Starts
+   *  at the desktop-tuned REPULSION_RADIUS. */
+  private repulsionRadius = REPULSION_RADIUS;
+
   /** Tracks the previous frame's held state so "respawn everything" fires
    *  exactly once, on the false -> true edge, instead of every frame. */
   private wasHeld = false;
@@ -171,6 +176,23 @@ export class ParticleEngine {
     this.spawnHalfHeight = halfHeight;
   }
 
+  /**
+   * Scales the idle hover-repulsion radius relative to its desktop-tuned
+   * value. REPULSION_RADIUS is an absolute world-unit distance, tuned
+   * against the desktop assembled-shape size — on a narrower viewport the
+   * assembled shape itself is scaled down (see ParticleCanvas), but this
+   * radius doesn't shrink automatically with it. Without this, the same
+   * fixed radius covers a much larger fraction of a small mobile shape,
+   * and since the pointer defaults to screen-center (world origin) until
+   * the person actually touches/moves it, that default hover point sits
+   * permanently inside the shape and visibly bows it out of place. Call
+   * with the same ratio the shape's world size was scaled by so the
+   * repulsion "bubble" stays proportional to the shape at any size.
+   */
+  public setRepulsionScale(scale: number): void {
+    this.repulsionRadius = REPULSION_RADIUS * scale;
+  }
+
   public update(deltaTime: number): void {
     // Guard against huge delta spikes (tab switch, debugger pause).
     const dt = Math.min(deltaTime, 1 / 30);
@@ -179,6 +201,7 @@ export class ParticleEngine {
     const positions = this.positions;
     const velocities = this.velocities;
     const home = this.homePositions;
+    const repulsionRadius = this.repulsionRadius;
 
     this.interaction.update();
     const pointer = this.interaction.getWorldPosition();
@@ -278,9 +301,9 @@ export class ParticleEngine {
         const dz = z - pz;
         const distSq = dx * dx + dy * dy + dz * dz;
 
-        if (distSq < REPULSION_RADIUS * REPULSION_RADIUS) {
+        if (distSq < repulsionRadius * repulsionRadius) {
           const dist = Math.sqrt(distSq) || 0.0001;
-          const force = (1 - dist / REPULSION_RADIUS) * REPULSION_STRENGTH;
+          const force = (1 - dist / repulsionRadius) * REPULSION_STRENGTH;
           vx += (dx / dist) * force * dt;
           vy += (dy / dist) * force * dt;
           vz += (dz / dist) * force * dt;

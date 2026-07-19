@@ -113,7 +113,10 @@ const DISSOLVE_FADE_DURATION = 1.1;
 // then on — hover repulsion and hold-and-drag both act relative to it.
 // -----------------------------------------------------------------------
 
-/** World-space width/height the assembled logo + text shape is fit into. */
+/** World-space width/height the assembled logo + text shape is fit into
+ *  on desktop / wide viewports. Narrower viewports scale this down (see
+ *  getResponsiveContentWorldSize) so the shape never overflows the
+ *  visible screen — this value is left untouched as the desktop cap. */
 const CONTENT_WORLD_SIZE = 4.2;
 
 /** Point-size multiplier for each part of the assembled shape. The logo
@@ -122,7 +125,40 @@ const CONTENT_WORLD_SIZE = 4.2;
 const LOGO_PARTICLE_SIZE = 0.16;
 const TEXT_PARTICLE_SIZE = 0.46;
 
+/** Fraction of the visible horizontal space the assembled shape is
+ *  allowed to fill, leaving breathing room on narrow (phone/tablet)
+ *  viewports so nothing touches the screen edges. */
+const CONTENT_FIT_MARGIN = 0.86;
+
+/** Never shrink particle point sizes below this fraction of their
+ *  desktop value, even if the shape itself scales down a lot — keeps
+ *  the logo trace and text legible on very small screens. */
+const MIN_PARTICLE_SIZE_SCALE = 0.6;
+
 const WELCOME_TEXT = 'WELCOME TO MY PORTFOLIO';
+
+/**
+ * Computes the world-space size the assembled logo + text shape should
+ * be sampled at for the current viewport. The camera's fov/z are fixed,
+ * so the visible *height* in world units is constant, but the visible
+ * *width* shrinks on narrow/portrait viewports. The shape is square, so
+ * it's the width that clips first on phones — this scales it down to
+ * fit, and simply caps at CONTENT_WORLD_SIZE on wide/desktop viewports
+ * (where it already fits comfortably), leaving desktop unchanged.
+ */
+function getResponsiveContentWorldSize(
+  camera: THREE.Camera,
+  size: { width: number; height: number },
+): number {
+  if (!(camera instanceof THREE.PerspectiveCamera)) return CONTENT_WORLD_SIZE;
+
+  const aspect = size.width / Math.max(size.height, 1);
+  const distance = camera.position.z;
+  const halfHeight = distance * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  const visibleWidth = halfHeight * aspect * 2;
+
+  return Math.min(CONTENT_WORLD_SIZE, visibleWidth * CONTENT_FIT_MARGIN);
+}
 
 // -----------------------------------------------------------------------
 // Public props
@@ -257,6 +293,7 @@ const ParticleScene: FC<ParticleSceneProps> = ({ isLeaving, layout }) => {
       interaction,
     });
     engine.setSpawnBounds(spawnBoundsRef.current.halfWidth, spawnBoundsRef.current.halfHeight);
+    engine.setRepulsionScale(getResponsiveContentWorldSize(camera, size) / CONTENT_WORLD_SIZE);
     engineRef.current = engine;
 
     return () => {
@@ -267,41 +304,76 @@ const ParticleScene: FC<ParticleSceneProps> = ({ isLeaving, layout }) => {
   }, [geometry, layout]);
 
   // -----------------------------------------------------------------
-  // Assemble on load — samples the logo + welcome-text shape once
-  // (same particle count as the initial scatter, so morphTo() can
-  // swap it in directly) and, the moment it's ready, retargets the
-  // engine's home position so the cloud eases into place. Checked
-  // once per frame instead of via a timer, so it fires the instant
-  // both the async shape and the engine exist — no race, no delay.
+  // Assemble on load — samples the logo + welcome-text shape (same
+  // particle count as the initial scatter, so morphTo() can swap it in
+  // directly) and, the moment it's ready, retargets the engine's home
+  // position so the cloud eases into place. Checked once per frame
+  // instead of via a timer, so it fires the instant both the async
+  // shape and the engine exist — no race, no delay.
+  //
+  // Re-runs whenever the *measured* viewport size actually changes
+  // (orientation change, devtools responsive resize, or the canvas's
+  // first real measurement landing after an initial 0×0 tick) so the
+  // shape is always fit to the real viewport rather than whatever size
+  // happened to be current the instant this component first mounted.
+  // assembledRef is reset on each new shape so the frame loop below
+  // re-triggers morphTo() and eases smoothly into the new layout.
+  //
+  // The re-sample is debounced: a resize handle being *dragged* (e.g.
+  // devtools responsive mode) fires many resize events per second, and
+  // re-morphing on every single one keeps yanking each particle's target
+  // mid-flight, so it never finishes converging — producing a smeared,
+  // half-assembled shape frozen wherever the drag happened to stop. This
+  // waits for the size to settle before sampling/morphing, so on a real
+  // device (one resize/rotation event) it's effectively instant, and
+  // during interactive resizing it only resolves once you let go.
   // -----------------------------------------------------------------
   const assembledShapeRef = useRef<SampledShape | null>(null);
   const assembledRef = useRef(false);
 
   useEffect(() => {
+    // Ignore transient 0×0 measurements before the canvas has laid out —
+    // sampling at zero size would produce a degenerate, invisible shape.
+    if (size.width < 2 || size.height < 2) return;
+
     let cancelled = false;
 
-    sampleLogoWithTextShape(
-      logoUrl,
-      WELCOME_TEXT,
-      layout.count,
-      CONTENT_WORLD_SIZE,
-      LOGO_PARTICLE_SIZE,
-      TEXT_PARTICLE_SIZE,
-    )
-      .then((shape) => {
-        if (!cancelled) assembledShapeRef.current = shape;
-      })
-      .catch((error) => {
-        // eslint-disable-next-line no-console
-        console.error('[ParticleCanvas] Failed to assemble logo + text shape:', error);
-      });
+    const timeoutId = window.setTimeout(() => {
+      // Fit the shape to the current viewport (capped at the desktop
+      // size), and keep particle sizes from shrinking into illegibility
+      // along with it.
+      const responsiveWorldSize = getResponsiveContentWorldSize(camera, size);
+      const sizeScale = Math.max(responsiveWorldSize / CONTENT_WORLD_SIZE, MIN_PARTICLE_SIZE_SCALE);
+
+      sampleLogoWithTextShape(
+        logoUrl,
+        WELCOME_TEXT,
+        layout.count,
+        responsiveWorldSize,
+        LOGO_PARTICLE_SIZE * sizeScale,
+        TEXT_PARTICLE_SIZE * sizeScale,
+      )
+        .then((shape) => {
+          if (cancelled) return;
+          assembledShapeRef.current = shape;
+          // Let the frame loop below morph to this (possibly updated)
+          // shape again, even if an earlier shape was already assembled.
+          assembledRef.current = false;
+        })
+        .catch((error) => {
+          // eslint-disable-next-line no-console
+          console.error('[ParticleCanvas] Failed to assemble logo + text shape:', error);
+        });
+    }, 200);
 
     return () => {
       cancelled = true;
+      window.clearTimeout(timeoutId);
     };
-    // layout is generated once and never changes identity.
+    // layout never changes identity; camera is stable for the canvas's
+    // lifetime. size.width/size.height intentionally drive re-sampling.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [layout]);
+  }, [layout, size.width, size.height]);
 
   // -----------------------------------------------------------------
   // Dissolve trigger — fires exactly once, on the false -> true edge
@@ -349,6 +421,13 @@ const ParticleScene: FC<ParticleSceneProps> = ({ isLeaving, layout }) => {
       spawnBoundsRef.current = { halfWidth, halfHeight };
       engineRef.current?.setSpawnBounds(halfWidth, halfHeight);
     }
+
+    // Keep the idle hover-repulsion radius proportional to the current
+    // responsive shape size (see ParticleEngine.setRepulsionScale) — on
+    // a narrow/shrunk shape, the pointer's screen-center default position
+    // would otherwise permanently bow it out of shape (fixed-radius
+    // repulsion covering most of a much smaller shape).
+    engineRef.current?.setRepulsionScale(getResponsiveContentWorldSize(camera, size) / CONTENT_WORLD_SIZE);
   }, [size, gl, camera]);
 
   // -----------------------------------------------------------------
