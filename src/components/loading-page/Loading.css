@@ -1,0 +1,121 @@
+/* ==========================================================
+   Loading Screen
+========================================================== */
+.loading-container {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000000;
+    overflow: hidden;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* ==========================================================
+   Three.js Canvas
+========================================================== */
+.loading-container canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+/* ==========================================================
+   UI Layer
+========================================================== */
+.loading-ui {
+    position: absolute;
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+/* ==========================================================
+   Enter Button
+========================================================== */
+.enter-button {
+    pointer-events: auto;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    padding: 16px 42px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #0A0E17;
+    background: #F4F1DE;
+    transition:
+        transform .35s ease,
+        background .35s ease,
+        color .35s ease,
+        box-shadow .35s ease;
+    user-select: none;
+    font-family:
+        Inter,
+        Poppins,
+        sans-serif;
+    box-shadow:
+        0 8px 28px rgba(0,0,0,.45);
+}
+/* ==========================================================
+   Button Hover
+========================================================== */
+.enter-button:hover {
+    transform:
+        translateY(-3px)
+        scale(1.04);
+    background: #D97B66;
+    color: white;
+    box-shadow:
+        0 0 18px rgba(217,123,102,.35),
+        0 0 40px rgba(217,123,102,.18);
+}
+/* ==========================================================
+   Button Click
+========================================================== */
+.enter-button:active {
+    transform:
+        scale(.96);
+}
+/* ==========================================================
+   Fade Out State
+========================================================== */
+.loading-exit {
+    pointer-events: none;
+}
+/* =========================================================
+   Smooth Fade
+========================================================== */
+.loading-container {
+    transition:
+        opacity 1s ease;
+}
+/* ==========================================================
+   Responsive
+========================================================== */
+@media (max-width:768px){
+    .enter-button{
+        padding:14px 30px;
+        font-size:.92rem;
+    }
+    .loading-ui{
+        bottom:7%;
+    }
+}
+@media (max-width:480px){
+    .enter-button{
+        padding:12px 26px;
+        font-size:.85rem;
+    }
+    .loading-ui{
+        bottom:6%;
+    }
+}
