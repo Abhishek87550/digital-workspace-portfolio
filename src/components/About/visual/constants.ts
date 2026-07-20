@@ -42,19 +42,20 @@ export const CARD_COLORS = {
 } as const;
 
 /** Physical dimensions of the card, in Three.js world units (portrait ID-card ratio). */
-export const CARD_WIDTH = 1.7;
-export const CARD_HEIGHT = 2.6;
+/** Scaled to ~78% of the original 1.4 x 2.2 size. */
+export const CARD_WIDTH = 1.1;
+export const CARD_HEIGHT = 1.72;
 export const CARD_THICKNESS = 0.02;
 
-/** Texture resolution for the canvas-drawn card face — sharp on retina, cheap to generate. */
-export const CARD_TEXTURE_WIDTH = 900;
+/** Texture resolution for the canvas-drawn card face — bumped up for a sharper, less "blurry" face texture. */
+export const CARD_TEXTURE_WIDTH = 1200;
 export const CARD_TEXTURE_HEIGHT = Math.round(
   (CARD_TEXTURE_WIDTH / CARD_WIDTH) * CARD_HEIGHT,
 );
 
 /** Lanyard ribbon texture — wide and short, tiled along the strap. */
 export const LANYARD_TEXTURE_WIDTH = 1024;
-export const LANYARD_TEXTURE_HEIGHT = 160;
+export const LANYARD_TEXTURE_HEIGHT = 180;
 export const LANYARD_TEXTURE_REPEATS = 3; // copies of the text drawn per tile, before meshline re-tiles it further
 
 /**
@@ -68,7 +69,10 @@ export const LANYARD_TEXTURE_REPEATS = 3; // copies of the text drawn per tile, 
 export const ROPE_SEGMENT_LENGTH = 0.5;
 export const ROPE_BALL_RADIUS = 0.06;
 export const CARD_JOINT_DROP = CARD_HEIGHT / 2 + 0.15;
-export const FIXED_ANCHOR_POSITION: [number, number, number] = [0, 4.25, 0];
+/** Lowered from 4.25 so the (now smaller) card settles fully inside the
+ * camera frame at rest, with a visible strand of lanyard above it,
+ * instead of the card's top edge / clip getting cropped off-screen. */
+export const FIXED_ANCHOR_POSITION: [number, number, number] = [0, 3.3, 0];
 
 /** How many times the lanyard texture tiles along the strap (GPU-side, via meshline's `repeat`). */
 export const LANYARD_REPEAT_TILES = 4;
@@ -81,8 +85,8 @@ export const ROPE_LERP_MAX_SPEED = 50;
 export const TILT_BACK_STRENGTH = 0.28;
 
 /** Idle float (applied only while the card isn't being dragged). */
-export const IDLE_FLOAT_AMPLITUDE = 0.045;
-export const IDLE_FLOAT_SPEED = 0.6;
+export const IDLE_FLOAT_AMPLITUDE = 0.025;
+export const IDLE_FLOAT_SPEED = 0.5;
 
 /** Camera framing, tuned so the card fills ~75% of the visible frame height. */
 export const CAMERA_POSITION: [number, number, number] = [0, 0, 8.2];

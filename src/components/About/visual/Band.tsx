@@ -64,8 +64,8 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 const segmentProps = {
   type: "dynamic" as const,
   canSleep: false,
-  angularDamping: 3,
-  linearDamping: 2.2,
+  angularDamping: 4,
+  linearDamping: 3,
 };
 
 /** Clamps a value between min and max. */
@@ -223,22 +223,22 @@ const Band = () => {
     <>
       <group position={FIXED_ANCHOR_POSITION}>
         <RigidBody ref={fixed} type="kinematicPosition" canSleep={false} />
-        <RigidBody position={[0.2, 0, 0]} ref={j1} {...segmentProps}>
+        <RigidBody position={[0, -ROPE_SEGMENT_LENGTH, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[ROPE_BALL_RADIUS]} />
         </RigidBody>
-        <RigidBody position={[0.4, 0, 0]} ref={j2} {...segmentProps}>
+        <RigidBody position={[0, -ROPE_SEGMENT_LENGTH * 2, 0]} ref={j2} {...segmentProps}>
           <BallCollider args={[ROPE_BALL_RADIUS]} />
         </RigidBody>
-        <RigidBody position={[0.6, 0, 0]} ref={j3} {...segmentProps}>
+        <RigidBody position={[0, -ROPE_SEGMENT_LENGTH * 3, 0]} ref={j3} {...segmentProps}>
           <BallCollider args={[ROPE_BALL_RADIUS]} />
         </RigidBody>
         <RigidBody
-          position={[0.8, -CARD_JOINT_DROP, 0]}
+          position={[0, -ROPE_SEGMENT_LENGTH * 3 - CARD_JOINT_DROP, 0]}
           ref={card}
           type={dragged ? "kinematicPosition" : "dynamic"}
           canSleep={false}
-          angularDamping={2.4}
-          linearDamping={1.6}
+          angularDamping={3.2}
+          linearDamping={2.2}
         >
           <CuboidCollider args={[halfWidth, halfHeight, CARD_THICKNESS]} />
           <group
@@ -289,14 +289,17 @@ const Band = () => {
                 color={CARD_COLORS.cardBorder}
                 roughness={0.6}
               />
-              {/* Front face — the drawn card texture, with a laminate clearcoat. */}
+              {/* Front face — the drawn card texture, with a laminate clearcoat.
+                  Lower roughness/clearcoatRoughness and metalness keep the
+                  surface crisp and glass-like instead of hazy. */}
               <meshPhysicalMaterial
                 attach="material-4"
                 map={cardTexture}
-                roughness={0.35}
-                metalness={0.1}
+                roughness={0.12}
+                metalness={0.04}
                 clearcoat={1}
-                clearcoatRoughness={0.15}
+                clearcoatRoughness={0.04}
+                envMapIntensity={1.1}
               />
               {/* Back face */}
               <meshStandardMaterial
@@ -306,17 +309,24 @@ const Band = () => {
               />
             </mesh>
 
-            {/* Small clip ring at the top, nodding at a real lanyard clip. */}
+            {/* Lanyard hook — a single elongated metal loop bridging the
+                strap (above) to the card (below). Left at the torus's
+                default orientation (hole through Z) so it faces the
+                camera directly and always reads clearly as an open
+                loop/hook, rather than relying on two separate pieces
+                lining up edge-on. Stretched vertically via scale to
+                look like a real lanyard clip rather than a plain ring. */}
             <mesh
-              position={[0, halfHeight + 0.06, 0]}
-              rotation={[Math.PI / 2, 0, 0]}
+              position={[0, CARD_JOINT_DROP, 0.015]}
+              scale={[0.75, 1.35, 0.75]}
               castShadow
+              renderOrder={1}
             >
-              <torusGeometry args={[0.09, 0.022, 12, 24]} />
+              <torusGeometry args={[0.09, 0.02, 12, 24]} />
               <meshStandardMaterial
-                color="#B8BEC9"
+                color="#C7CCD6"
                 metalness={0.9}
-                roughness={0.25}
+                roughness={0.2}
               />
             </mesh>
           </group>
@@ -331,7 +341,7 @@ const Band = () => {
           useMap={1}
           repeat={[LANYARD_REPEAT_TILES, 1]}
           color="#FFFFFF"
-          depthTest={false}
+          depthTest={true}
           depthWrite={false}
           resolution={[width, height]}
           lineWidth={1}

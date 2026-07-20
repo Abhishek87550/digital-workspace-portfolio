@@ -36,10 +36,10 @@ const IDCardCanvas = () => {
     >
       <ResponsiveCamera />
 
-      <ambientLight intensity={0.6} />
+      <ambientLight intensity={0.42} />
       <directionalLight
         position={[3, 5, 4]}
-        intensity={1.4}
+        intensity={1.6}
         castShadow
         shadow-mapSize={[1024, 1024]}
         shadow-bias={-0.0004}
