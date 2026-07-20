@@ -1,30 +1,28 @@
 /**
  * AboutVisual.tsx
  * =====================================================================
- * Right column of the About section — reserved for a future React
- * Three Fiber canvas (3D ID card, per the design brief).
+ * Right column of the About section — an interactive 3D ID card on a
+ * lanyard (React Three Fiber + Rapier physics), per the design brief.
  *
- * Layout only: this renders an empty, fixed-aspect-ratio frame that
- * fills its column and stays centered at every breakpoint. A future
- * <Canvas> (or any other visual) can be mounted directly inside
- * `[data-about-visual-frame]` at w-full/h-full with no layout changes
- * here — sizing and centering are already handled by this wrapper.
+ * The frame now fills the *entire* right column (desktop: 55% width x
+ * 100vh, from About.tsx's `md:grid-cols-[45%_55%] md:h-screen`) instead
+ * of a small fixed-aspect box — the canvas and card should occupy the
+ * full right half of the screen, with the card/lanyard framed inside
+ * it by the camera logic in `visual/`, not by a boxed-in container.
+ * On mobile, where the column collapses to auto-height single-column
+ * stacking, a viewport-relative height keeps the card generously
+ * sized without ever overflowing.
  * =====================================================================
  */
 
+import IDCardCanvas from "./visual/IDCardCanvas";
+
 const AboutVisual = () => {
   return (
-    <div className="flex w-full items-center justify-center md:h-full">
-      {/*
-        Fixed-aspect placeholder frame. aria-hidden because it currently
-        renders no content — remove it once a real, meaningful visual
-        (e.g. the 3D canvas) is mounted inside.
-      */}
-      <div
-        data-about-visual-frame
-        aria-hidden="true"
-        className="aspect-4/5 w-full max-w-360px sm:max-w-420px md:h-70% md:w-auto md:max-w-none lg:h-[75%]"
-      />
+    <div className="flex h-[70vh] w-full items-center justify-center sm:h-[75vh] md:h-full">
+      <div data-about-visual-frame className="h-full w-full">
+        <IDCardCanvas />
+      </div>
     </div>
   );
 };
