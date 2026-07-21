@@ -1,1 +1,34 @@
 @import "tailwindcss";
+
+/* =====================================================================
+   Global theme system (Color / Monochrome)
+   =====================================================================
+   The Monochrome mode is implemented as a CSS filter applied to the
+   `#app-content` wrapper (see App.tsx) rather than by rewriting each
+   section's colors — that keeps every existing section's markup,
+   layout, and animations completely untouched.
+
+   Note on scope: a `filter` on an ancestor composites its entire
+   subtree as one layer, so a descendant can't "opt out" of it. That
+   means content *inside* #app-content (including existing CTA
+   buttons in sections we're not modifying) desaturates along with
+   everything else. The navbar is intentionally rendered as a sibling
+   of #app-content, outside this filter, so it can keep its accent
+   color, active-link highlight, and glow alive in Monochrome mode as
+   the spec asks for "important interactive accents".
+   ===================================================================== */
+
+#app-content {
+  transition: filter 600ms ease;
+}
+
+html[data-theme="mono"] #app-content {
+  filter: grayscale(1);
+}
+
+/* Prevent a flash of unstyled scrollbar color mismatch during the
+   crossfade; keeps the transition feeling like one smooth dissolve
+   rather than a hard cut. */
+html {
+  transition: background-color 600ms ease;
+}

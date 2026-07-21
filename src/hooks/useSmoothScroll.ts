@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { setLenis } from "@/lib/lenisInstance";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -44,10 +45,13 @@ export function useSmoothScroll() {
     // scroll, that catch-up jump looks like a stutter/jump-cut.
     gsap.ticker.lagSmoothing(0);
 
+    setLenis(lenis);
+
     return () => {
       gsap.ticker.remove(tickerCallback);
       lenis.off("scroll", onLenisScroll);
       lenis.destroy();
+      setLenis(null);
     };
   }, []);
 }

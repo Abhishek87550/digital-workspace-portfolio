@@ -45,7 +45,7 @@ const AboutContent = () => {
       {/* Name — gradient fill with a soft glow, matching the design reference. */}
       <h2
         data-about-name
-        className="whitespace-nowrap bg-linear-to-b from-[#FFF3E6] via-[#F6C89F] to-[#D97B66] bg-clip-text text-[clamp(1.65rem,6.2vw,4.75rem)] font-extrabold leading-[1.05] text-transparent drop-shadow-[0_0_35px_rgba(217,123,102,0.35)]"
+        className="bg-linear-to-b from-[#FFF3E6] via-[#F6C89F] to-[#D97B66] bg-clip-text text-[clamp(1.55rem,6.2vw,4.75rem)] font-extrabold leading-[1.05] text-transparent drop-shadow-[0_0_35px_rgba(217,123,102,0.35)]"
       >
         {NAME}
       </h2>
