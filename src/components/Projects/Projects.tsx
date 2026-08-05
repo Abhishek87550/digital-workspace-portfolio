@@ -1,35 +1,110 @@
-/**
- * Projects.tsx
- * =====================================================================
- * Placeholder section — gives the navbar's "Projects" link a real
- * anchor to scroll to. Styled to match the established dark/cream/
- * warm-orange palette so it doesn't look out of place, but
- * intentionally minimal: the real project showcase is a separate
- * content pass, not part of the navigation/theme-system brief.
- * =====================================================================
- */
+import { FiExternalLink, FiGithub } from "react-icons/fi";
+import ShootingStars from "../ShootingStars";
+
+const DUMMY_PROJECTS = [
+  {
+    title: "E-Commerce Experience",
+    type: "Full-Stack Architecture",
+    description: "A high-performance headless commerce platform featuring real-time inventory synchronization, immersive 3D product previews, and a seamless zero-friction checkout flow.",
+    tech: ["Next.js", "TypeScript", "Three.js", "Stripe"],
+    image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800",
+    link: "#",
+    github: "#"
+  },
+  {
+    title: "FinTech Dashboard",
+    type: "Frontend Engineering",
+    description: "An enterprise-grade financial analytics dashboard built for scale. Handles thousands of concurrent data points with 60fps WebGL charting and granular access controls.",
+    tech: ["React", "GraphQL", "Tailwind", "WebGL"],
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
+    link: "#",
+    github: "#"
+  }
+];
 
 const Projects = () => {
   return (
     <section
       id="projects"
       aria-label="Projects"
-      className="relative isolate flex min-h-[70vh] w-full flex-col items-center justify-center overflow-hidden bg-[#0A0E17] px-5 py-24 text-center sm:px-8 md:px-14"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center bg-transparent px-5 py-24 sm:px-8 md:px-14 lg:px-20"
     >
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-1/2 h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#D9694F]/10 blur-[120px]" />
-      </div>
+      <ShootingStars />
+      <div className="z-10 w-full max-w-6xl">
+        {/* Header */}
+        <div className="mb-20 text-center">
+          <p className="reveal text-sm font-semibold uppercase tracking-[0.25em] text-[var(--text-highlight)] drop-shadow-[0_0_8px_var(--nav-shadow)]">
+            Selected Work
+          </p>
+          <h2 className="reveal reveal-delay-200 mt-4 font-serif text-[clamp(2.5rem,6vw,4.5rem)] font-extrabold leading-[1.1] text-transparent bg-clip-text bg-gradient-to-b from-[var(--accent-gradient-from)] via-[var(--accent-gradient-via)] to-[var(--accent-gradient-to)] drop-shadow-[0_12px_25px_var(--nav-shadow)]">
+            Featured Projects
+          </h2>
+          <div className="reveal reveal-delay-300 mx-auto mt-6 h-[1px] w-24 bg-gradient-to-r from-transparent via-[#FAD961] to-transparent opacity-60 shadow-[0_0_15px_#FAD961]"></div>
+        </div>
 
-      <p className="text-sm font-semibold uppercase tracking-[0.25em] text-[#E8916F]">
-        Selected Work
-      </p>
-      <h2 className="mt-4 bg-linear-to-b from-[#FFF3E6] via-[#F6C89F] to-[#D97B66] bg-clip-text text-[clamp(1.75rem,5vw,3.25rem)] font-extrabold leading-tight text-transparent">
-        Projects
-      </h2>
-      <p className="mt-4 max-w-md text-sm leading-relaxed text-[#F4F1DE]/60 sm:text-base">
-        Project case studies are coming soon — this section is wired up
-        and ready for content.
-      </p>
+        {/* Projects Stack */}
+        <div className="flex flex-col gap-16 md:gap-24">
+          {DUMMY_PROJECTS.map((project, index) => (
+            <div 
+              key={index}
+              className={`reveal reveal-delay-200 group relative grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12`}
+            >
+              {/* Image Container */}
+              <div className={`relative h-[300px] md:h-[450px] w-full overflow-hidden rounded-3xl border border-[var(--nav-border)] shadow-[0_15px_40px_rgba(0,0,0,0.6),inset_0_0_20px_var(--nav-shadow)] md:col-span-7 transition-all duration-700 group-hover:border-[var(--nav-border)] group-hover:shadow-[0_25px_50px_var(--nav-shadow)] ${index % 2 !== 0 ? 'md:order-2 md:col-start-6' : ''}`}>
+                <div className="absolute inset-0 bg-black/40 z-10 transition-opacity duration-500 group-hover:opacity-0" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,black_100%)] z-10 opacity-60" />
+                <img 
+                  src={project.image} 
+                  alt={project.title} 
+                  className="h-full w-full object-cover filter contrast-125 saturate-50 sepia-[20%] transition-transform duration-700 group-hover:scale-105 group-hover:saturate-100"
+                />
+              </div>
+
+              {/* Content Container */}
+              <div className={`relative z-20 flex flex-col justify-center rounded-3xl border border-[var(--nav-border)] bg-[var(--card-bg)] p-8 backdrop-blur-xl shadow-lg md:col-span-6 md:-mx-12 ${index % 2 !== 0 ? 'md:order-1' : 'md:col-start-7'}`}>
+                <p className="mb-2 text-sm font-bold tracking-widest text-[var(--text-highlight)]">
+                  {project.type}
+                </p>
+                <h3 className="mb-6 font-serif text-3xl font-bold text-[var(--text-heading)] drop-shadow-[0_2px_10px_var(--nav-shadow)] sm:text-4xl">
+                  {project.title}
+                </h3>
+                
+                <p className="mb-8 text-sm leading-relaxed text-[var(--text-body)] sm:text-base">
+                  {project.description}
+                </p>
+
+                <div className="mb-8 flex flex-wrap gap-3">
+                  {project.tech.map((tech, i) => (
+                    <span 
+                      key={i} 
+                      className="rounded-full border border-[var(--nav-border)] bg-[#E19553]/5 px-4 py-1.5 text-[10px] font-bold tracking-widest text-[var(--text-secondary-heading)] uppercase shadow-[inset_0_0_10px_var(--nav-shadow)] transition-colors duration-300 hover:border-[var(--text-highlight)] hover:text-[var(--text-highlight)]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <a 
+                    href={project.github}
+                    className="group/link flex items-center gap-2 text-sm font-semibold tracking-widest text-[var(--text-muted)] transition-colors hover:text-[var(--text-highlight)]"
+                  >
+                    <FiGithub className="text-xl transition-transform duration-300 group-hover/link:-translate-y-1 group-hover/link:drop-shadow-[0_0_8px_var(--nav-shadow)]" />
+                    <span>CODE</span>
+                  </a>
+                  <a 
+                    href={project.link}
+                    className="group/link flex items-center gap-2 text-sm font-semibold tracking-widest text-[var(--text-highlight)] transition-colors hover:text-[var(--text-highlight)]"
+                  >
+                    <FiExternalLink className="text-xl transition-transform duration-300 group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-hover/link:drop-shadow-[0_0_8px_var(--nav-shadow)]" />
+                    <span>LIVE DEMO</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 };

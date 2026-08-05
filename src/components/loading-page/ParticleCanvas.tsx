@@ -236,6 +236,7 @@ const ParticleScene: FC<ParticleSceneProps> = ({ isLeaving, layout }) => {
     return new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
+      // eslint-disable-next-line react-hooks/refs
       uniforms: uniformsRef.current,
       transparent: true,
       depthWrite: false,
@@ -409,9 +410,11 @@ const ParticleScene: FC<ParticleSceneProps> = ({ isLeaving, layout }) => {
   // instead of a stale/default box.
   // -----------------------------------------------------------------
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/immutability
     uniformsRef.current.uPixelRatio.value = gl.getPixelRatio();
 
     if (camera instanceof THREE.PerspectiveCamera) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/immutability
       camera.aspect = size.width / Math.max(size.height, 1);
       camera.updateProjectionMatrix();
 
@@ -428,7 +431,8 @@ const ParticleScene: FC<ParticleSceneProps> = ({ isLeaving, layout }) => {
     // would otherwise permanently bow it out of shape (fixed-radius
     // repulsion covering most of a much smaller shape).
     engineRef.current?.setRepulsionScale(getResponsiveContentWorldSize(camera, size) / CONTENT_WORLD_SIZE);
-  }, [size, gl, camera]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [size, gl]);
 
   // -----------------------------------------------------------------
   // Per-frame update loop. No allocations, no object creation.

@@ -29,36 +29,36 @@ const DESCRIPTION =
 
 const AboutContent = () => {
   return (
-    <div className="flex w-full flex-col justify-center gap-6 text-[#F4F1DE] sm:gap-7 md:gap-8">
-      {/* Greeting — short intro line above the name (e.g. "Hello, I'm"). */}
+    <div className="flex w-full flex-col justify-center gap-6 text-[var(--text-body)] sm:gap-7 md:gap-8">
+      {/* Greeting */}
       <p
         data-about-greeting
-        className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.25em] text-[#E8916F] sm:text-base"
+        className="reveal flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.25em] text-[var(--text-highlight)] drop-shadow-[0_0_8px_var(--nav-shadow)] sm:text-base"
       >
         {GREETING}
         <span
           aria-hidden="true"
-          className="h-px w-10 flex-none bg-linear-to-r from-[#E8916F] to-transparent sm:w-14"
+          className="h-px w-10 flex-none bg-gradient-to-r from-[#FAD961] to-transparent sm:w-14"
         />
       </p>
 
-      {/* Name — gradient fill with a soft glow, matching the design reference. */}
+      {/* Name */}
       <h2
         data-about-name
-        className="bg-linear-to-b from-[#FFF3E6] via-[#F6C89F] to-[#D97B66] bg-clip-text text-[clamp(1.55rem,6.2vw,4.75rem)] font-extrabold leading-[1.05] text-transparent drop-shadow-[0_0_35px_rgba(217,123,102,0.35)]"
+        className="reveal reveal-delay-200 font-serif bg-gradient-to-b from-[var(--accent-gradient-from)] via-[var(--accent-gradient-via)] to-[var(--accent-gradient-to)] bg-clip-text text-[clamp(1.55rem,6.2vw,4.75rem)] font-extrabold leading-[1.05] text-transparent drop-shadow-[0_12px_25px_var(--nav-shadow)]"
       >
         {NAME}
       </h2>
 
-      {/* Rotating designation — cycling role/title text, one per accent color.
-          Fixed min-height (via clamp) reserves space for the tallest
-          line across breakpoints so cycling never causes layout shift. */}
-      <RotatingDesignation className="flex min-h-[clamp(1.75rem,5vw,2.75rem)] items-center gap-3 text-lg font-medium sm:text-xl md:text-2xl" />
+      {/* Rotating designation */}
+      <div className="reveal reveal-delay-300">
+        <RotatingDesignation className="flex min-h-[clamp(1.75rem,5vw,2.75rem)] items-center gap-3 text-lg font-medium text-[var(--text-secondary-heading)] drop-shadow-[0_0_5px_rgba(242,179,126,0.5)] sm:text-xl md:text-2xl" />
+      </div>
 
       {/* Professional description */}
       <p
         data-about-description
-        className="max-w-prose text-sm leading-relaxed text-[#F4F1DE]/70 sm:text-base md:text-lg"
+        className="reveal reveal-delay-400 max-w-prose text-sm leading-relaxed text-[var(--text-body)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] sm:text-base md:text-lg"
       >
         {DESCRIPTION}
       </p>
@@ -68,28 +68,28 @@ const AboutContent = () => {
         data-about-cta
         role="group"
         aria-label="Call to action"
-        className="flex flex-col gap-4 pt-2 sm:flex-row sm:flex-wrap sm:items-center"
+        className="reveal reveal-delay-500 flex flex-col gap-4 pt-2 sm:flex-row sm:flex-wrap sm:items-center"
       >
         <a
           href="#"
           download
           aria-label="Download resume (PDF)"
-          className="group inline-flex items-center justify-center gap-3 rounded-full bg-linear-to-r from-[#F0A583] to-[#D9694F] px-6 py-3 text-sm font-semibold tracking-wide text-[#0A0E17] shadow-[0_0_30px_-6px_rgba(217,123,102,0.65)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_40px_-4px_rgba(217,123,102,0.85)]  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D97B66] sm:px-7 sm:py-3.5 sm:text-base"
+          className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#8C4F2B] via-[#E19553] to-[#8C4F2B] bg-[length:200%_auto] px-6 py-3 text-sm font-bold tracking-widest text-white shadow-[0_5px_15px_var(--nav-shadow),inset_0_2px_5px_rgba(255,255,255,0.3)] transition-all duration-500 hover:-translate-y-1 hover:bg-[position:right_center] hover:shadow-[0_10px_35px_var(--nav-shadow),inset_0_2px_8px_rgba(255,255,255,0.5)] sm:px-7 sm:py-3.5 sm:text-base"
         >
-          <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full border border-[#0A0E17]/35">
-            <FiDownload className="text-sm" aria-hidden="true" />
+          <span className="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-white/20">
+            <FiDownload className="text-sm drop-shadow-[0_0_5px_rgba(255,255,255,0.8)]" aria-hidden="true" />
           </span>
-          Download Resume
+          <span className="relative z-10 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]">Download Resume</span>
         </a>
 
         <a
           href="#contact"
           aria-label="Let's connect — go to contact section"
-          className="group inline-flex items-center justify-center gap-3 rounded-full border border-[#7DC9F0]/50 bg-transparent px-6 py-3 text-sm font-semibold tracking-wide text-[#F4F1DE] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#7DC9F0] hover:shadow-[0_0_30px_-8px_rgba(125,201,240,0.55)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#7DC9F0] sm:px-7 sm:py-3.5 sm:text-base"
+          className="group relative inline-flex items-center justify-center gap-3 rounded-full border border-[var(--nav-border)] bg-black/40 backdrop-blur-md px-6 py-3 text-sm font-bold tracking-widest text-[var(--text-highlight)] shadow-[0_0_15px_var(--nav-shadow),inset_0_0_10px_var(--nav-shadow)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--text-highlight)] hover:bg-[#E19553]/10 hover:shadow-[0_10px_25px_var(--nav-shadow),inset_0_0_15px_var(--nav-shadow)] sm:px-7 sm:py-3.5 sm:text-base"
         >
           Let&apos;s Connect
           <FiArrowRight
-            className="text-base text-[#7DC9F0] transition-transform duration-300 group-hover:translate-x-1 sm:text-lg"
+            className="text-base transition-transform duration-300 group-hover:translate-x-1 sm:text-lg drop-shadow-[0_0_8px_var(--nav-shadow)]"
             aria-hidden="true"
           />
         </a>

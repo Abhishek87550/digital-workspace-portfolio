@@ -25,10 +25,10 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const DESIGNATIONS = [
-  { text: "Full Stack Developer", color: "#E8916F" },
-  { text: "UI/UX Designer", color: "#9CA3AF" },
-  { text: "AI Enthusiast", color: "#B79CF2" },
-  { text: "Problem Solver", color: "#7DC9F0" },
+  { text: "Full Stack Developer", color: "var(--text-highlight)" },
+  { text: "UI/UX Designer", color: "var(--text-secondary-heading)" },
+  { text: "AI Enthusiast", color: "var(--accent-gradient-from)" },
+  { text: "Problem Solver", color: "var(--accent-gradient-via)" },
 ] as const;
 
 const ROTATE_INTERVAL_MS = 2400;
@@ -57,7 +57,7 @@ const RotatingDesignation = ({ className }: RotatingDesignationProps) => {
       aria-live="polite"
       aria-atomic="true"
     >
-      <span aria-hidden="true" className="text-[#F4F1DE]/25">
+      <span aria-hidden="true" className="text-[var(--text-muted)]/25">
         |
       </span>
       <AnimatePresence mode="wait">
@@ -73,7 +73,7 @@ const RotatingDesignation = ({ className }: RotatingDesignationProps) => {
           {current.text}
         </motion.span>
       </AnimatePresence>
-      <span aria-hidden="true" className="text-[#F4F1DE]/25">
+      <span aria-hidden="true" className="text-[var(--text-muted)]/25">
         |
       </span>
     </p>

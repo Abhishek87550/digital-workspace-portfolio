@@ -2,8 +2,10 @@ import { useState } from "react";
 
 import LoadingScreen from "./components/loading-page/LoadingScreen";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
+import { useScrollReveal } from "./hooks/useScrollReveal";
 import { ThemeProvider } from "./context/ThemeContext";
 
+import StarfieldBackground from "./components/StarfieldBackground";
 import Navbar from "./components/Navbar/Navbar";
 import Hero from "./components/Hero/Hero";
 import About from "./components/About/About";
@@ -11,15 +13,16 @@ import Skills from "./components/Skills/Skills";
 import Projects from "./components/Projects/Projects";
 import Experience from "./components/Experience/Experience";
 import Achievements from "./components/Achievements/Achievements";
+import Resume from "./components/Resume/Resume";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 
 function App() {
   const [loadingFinished, setLoadingFinished] = useState(false);
 
-  // Smooth scroll only needs to run once the real page (past the loading
-  // screen) is mounted — the loading screen itself doesn't scroll.
+  // Smooth scroll and global scroll reveals
   useSmoothScroll();
+  useScrollReveal(loadingFinished);
 
   if (!loadingFinished) {
     return (
@@ -31,9 +34,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      {/* Navbar is a sibling of #app-content, not a child — it must stay
-          outside the monochrome filter so its accent color and active
-          link stay alive in Monochrome mode (see index.css). */}
+      <StarfieldBackground />
       <Navbar />
       <div id="app-content">
         <Hero />
@@ -42,6 +43,7 @@ function App() {
         <Projects />
         <Experience />
         <Achievements />
+        <Resume />
         <Contact />
         <Footer />
       </div>

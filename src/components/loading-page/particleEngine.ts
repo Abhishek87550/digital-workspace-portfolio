@@ -45,7 +45,7 @@ const REPULSION_RADIUS = 1.4;
 
 /** Peak strength of the pointer repulsion at zero distance. Raised so the
  *  hover reaction feels immediate instead of sluggish. */
-const REPULSION_STRENGTH = 8.0;
+const REPULSION_STRENGTH = 24.0;
 
 /** How long (seconds) a single spawn-to-despawn life cycle lasts while
  *  held, picked randomly per spawn between these two bounds so particles
@@ -63,13 +63,13 @@ const STREAM_FADE_OUT_FRACTION = 0.35;
 const SPAWN_KICK_STRENGTH = 1.6;
 
 /** Base strength pulling a particle toward the pointer while held. */
-const ATTRACTION_STRENGTH = 4.0;
+const ATTRACTION_STRENGTH = 12.0;
 
 /** Extra pull per world-unit of distance from the pointer while held — the
  *  farther a particle has spawned from the cursor, the harder it gets
  *  pulled in, producing a magnet-like attraction effect that reaches
  *  across the whole screen rather than the shape moving as one block. */
-const ATTRACTION_DISTANCE_GAIN = 2.4;
+const ATTRACTION_DISTANCE_GAIN = 4.0;
 
 /** Speed (per second) at which a particle's opacity eases back to fully
  *  visible once the pointer is released, so the reassembled shape doesn't
@@ -78,11 +78,11 @@ const ALPHA_RESTORE_SPEED = 8.0;
 
 /** Spring strength pulling idle particles back toward their home position.
  *  Raised alongside DAMPING so release/re-assembly snaps back quickly. */
-const RETURN_SPRING = 8.0;
+const RETURN_SPRING = 22.0;
 
 /** Per-second velocity damping, applied every frame. Raised so motion
  *  settles fast instead of feeling floaty/slow. */
-const DAMPING = 6.0;
+const DAMPING = 8.5;
 
 /** Outward acceleration applied to particles once dissolving. */
 const DISSOLVE_ACCEL = 5.5;

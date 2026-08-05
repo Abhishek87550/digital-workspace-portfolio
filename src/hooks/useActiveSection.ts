@@ -2,18 +2,12 @@
  * useActiveSection.ts
  * =====================================================================
  * Scrollspy: watches a list of section ids and reports which one is
- * currently "in focus" so the navbar can highlight the matching link
- * and animate the underline to it as the user scrolls.
+ * currently "in focus" so the navbar can highlight the matching link.
  *
- * Uses IntersectionObserver (not scroll-position math) so it stays
- * cheap and accurate regardless of section height, and works fine
- * alongside Lenis's virtual scroll since it only cares about actual
- * element visibility, not scroll offsets.
- *
- * A section counts as "active" once its top has crossed a line a
- * little below the fixed navbar — the rootMargin below pulls the
- * effective viewport up so the switch feels like it happens right as
- * a section arrives under the navbar, not once it's fully in frame.
+ * Uses a thin "sliver" IntersectionObserver band located at 20% from 
+ * the top of the viewport. Whichever section intersects this 1% tall 
+ * band is considered the active section. This guarantees that only one
+ * section is active at a time and fixes bugs with varying screen heights.
  * =====================================================================
  */
 
@@ -23,47 +17,53 @@ export function useActiveSection(sectionIds: string[]): string {
   const [activeId, setActiveId] = useState<string>(sectionIds[0] ?? "");
 
   useEffect(() => {
-    const elements = sectionIds
+    let elements = sectionIds
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
-    if (elements.length === 0) return;
+    // If some elements are missing (e.g., async mounting), try again after a short delay
+    if (elements.length < sectionIds.length) {
+      setTimeout(() => {
+        elements = sectionIds
+          .map((id) => document.getElementById(id))
+          .filter((el): el is HTMLElement => el !== null);
+        elements.forEach((el) => observer.observe(el));
+      }, 500);
+    }
 
-    // Track intersection ratios so, if multiple sections are partly
-    // visible at once (short sections, fast scroll), we can pick the
-    // one most in view rather than whichever fired last.
-    const ratios = new Map<string, number>();
+    if (elements.length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          ratios.set(entry.target.id, entry.isIntersecting ? entry.intersectionRatio : 0);
-        }
-
-        let bestId = activeId;
-        let bestRatio = 0;
-        for (const [id, ratio] of ratios) {
-          if (ratio > bestRatio) {
-            bestRatio = ratio;
-            bestId = id;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id);
           }
-        }
-        if (bestRatio > 0) setActiveId(bestId);
+        });
       },
       {
-        // Shrinks the effective viewport to a band just under where
-        // the floating navbar sits, so activation lines up with what
-        // the user perceives as "now scrolled into this section".
-        rootMargin: "-110px 0px -55% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
+        // A thin 1% horizontal band positioned at 20% from the top of the screen.
+        // This acts as the "sensor" line.
+        rootMargin: "-20% 0px -79% 0px",
+        threshold: 0,
       }
     );
 
     elements.forEach((el) => observer.observe(el));
 
-    return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sectionIds.join(",")]);
+    // Fallback: If we scroll to the absolute top, force 'home' to be active
+    const handleScroll = () => {
+      if (window.scrollY < 50) {
+        setActiveId(sectionIds[0]);
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [sectionIds]);
 
   return activeId;
 }

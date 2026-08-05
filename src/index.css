@@ -1,34 +1,283 @@
 @import "tailwindcss";
 
 /* =====================================================================
-   Global theme system (Color / Monochrome)
-   =====================================================================
-   The Monochrome mode is implemented as a CSS filter applied to the
-   `#app-content` wrapper (see App.tsx) rather than by rewriting each
-   section's colors — that keeps every existing section's markup,
-   layout, and animations completely untouched.
-
-   Note on scope: a `filter` on an ancestor composites its entire
-   subtree as one layer, so a descendant can't "opt out" of it. That
-   means content *inside* #app-content (including existing CTA
-   buttons in sections we're not modifying) desaturates along with
-   everything else. The navbar is intentionally rendered as a sibling
-   of #app-content, outside this filter, so it can keep its accent
-   color, active-link highlight, and glow alive in Monochrome mode as
-   the spec asks for "important interactive accents".
+   Global Design System Architecture
    ===================================================================== */
 
-#app-content {
-  transition: filter 600ms ease;
+:root {
+  /* DARK MODE (Default) - Apple Pro / Linear (Charcoal, Coral, Leather, Eggshell) */
+  --bg-primary: #0A0A0A;
+  --bg-secondary: #141519;
+  --bg-tertiary: #FF7F50; /* Used for decorative low-opacity blobs */
+  
+  --text-heading: #FF7F50; /* Coral */
+  --text-secondary-heading: #D2B48C; /* Leather */
+  --text-body: #F4EFE6; /* Eggshell */
+  --text-muted: #9E9A95; /* Warm Gray */
+  --text-highlight: #FF6347; /* Bright Coral */
+  
+  --accent-gradient-from: #FF7F50;
+  --accent-gradient-via: #D2B48C;
+  --accent-gradient-to: #E9967A;
+  
+  --nav-bg: #141519; /* Dark glass */
+  --nav-border: #2C2D32;
+  --nav-text: #F4EFE6;
+  --nav-active: #FF7F50;
+  --nav-active-text: #0A0A0A;
+  --nav-shadow: rgba(0, 0, 0, 0.4);
+  
+  --card-bg: #141519;
+  --card-border: #2C2D32;
+  --card-shadow: rgba(0, 0, 0, 0.3);
+  
+  --about-bg: #0F172A; /* Deep Navy */
+  --about-blob-1: rgba(255, 127, 80, 0.15); /* Coral */
+  --about-blob-2: rgba(210, 180, 140, 0.10); /* Leather */
+  
+  --btn-primary-bg: #FF7F50;
+  --btn-primary-text: #0A0A0A;
+  --btn-primary-shadow: rgba(255, 127, 80, 0.25);
+  
+  --btn-secondary-bg: transparent;
+  --btn-secondary-border: #D2B48C;
+  --btn-secondary-text: #D2B48C;
+  
+  --toggle-bg: #141519;
+  --toggle-thumb: #F4EFE6;
+  --toggle-border: #2C2D32;
+  --toggle-glow: rgba(255, 127, 80, 0.2);
+
+  /* Contact Section Specific */
+  --input-bg: rgba(18, 11, 7, 0.5);
+  --input-text: #FFFFFF;
+  --input-focus-bg: rgba(225, 149, 83, 0.1);
+  --input-placeholder: #6B7280;
+  --btn-send-from: #8C4F2B;
+  --btn-send-via: #E19553;
+  --social-bg-from: rgba(0, 0, 0, 0.8);
+  --social-bg-to: rgba(225, 149, 83, 0.1);
+  --map-hover: rgba(225, 149, 83, 0.1);
 }
 
-html[data-theme="mono"] #app-content {
-  filter: grayscale(1);
+html[data-theme="mono"] {
+  /* LIGHT MODE - Enhanced Contrast (Deeper text, softer background tone) */
+  --bg-primary: transparent;
+  --bg-secondary: #E2E8F0; /* Slate 200 */
+  --bg-tertiary: #94A3B8; /* Slate 400 */
+  
+  --text-heading: #020617; /* Slate 950 - Almost Black for max contrast */
+  --text-secondary-heading: #1E293B; /* Slate 800 */
+  --text-body: #334155; /* Slate 700 - Better readability */
+  --text-muted: #475569; /* Slate 600 - Visible but muted */
+  --text-highlight: #1D4ED8; /* Blue 700 */
+  
+  --accent-gradient-from: #2563EB; /* Blue 600 */
+  --accent-gradient-via: #475569; /* Slate 600 */
+  --accent-gradient-to: #0F172A; /* Slate 900 */
+  
+  --nav-bg: rgba(241, 245, 249, 0.8); /* Slate 100 glass */
+  --nav-border: rgba(15, 23, 42, 0.15); /* Slate 900 with 15% opacity */
+  --nav-text: #0F172A;
+  --nav-active: #1D4ED8;
+  --nav-active-text: #FFFFFF;
+  --nav-shadow: rgba(15, 23, 42, 0.1);
+  
+  --card-bg: rgba(248, 250, 252, 0.9); /* Slate 50 slightly transparent */
+  --card-border: rgba(15, 23, 42, 0.1);
+  --card-shadow: rgba(15, 23, 42, 0.08);
+  
+  --about-bg: #E0F2FE; /* Sky 100 */
+  --about-blob-1: rgba(255, 255, 255, 0.6);
+  --about-blob-2: rgba(37, 99, 235, 0.15);
+  
+  --btn-primary-bg: #2563EB;
+  --btn-primary-text: #FFFFFF;
+  --btn-primary-shadow: rgba(37, 99, 235, 0.3);
+  
+  --btn-secondary-bg: #F8FAFC;
+  --btn-secondary-border: rgba(15, 23, 42, 0.15);
+  --btn-secondary-text: #334155;
+  
+  --toggle-bg: #F1F5F9;
+  --toggle-thumb: #0F172A;
+  --toggle-border: #94A3B8;
+  --toggle-glow: rgba(37, 99, 235, 0.2);
+
+  /* Contact Section Specific - Light Mode */
+  --input-bg: rgba(255, 255, 255, 0.7);
+  --input-text: #020617; /* Slate 950 */
+  --input-focus-bg: rgba(255, 255, 255, 1);
+  --input-placeholder: #64748B; /* Slate 500 */
+  --btn-send-from: #1D4ED8; /* Blue 700 */
+  --btn-send-via: #3B82F6; /* Blue 500 */
+  --social-bg-from: rgba(255, 255, 255, 0.8);
+  --social-bg-to: rgba(37, 99, 235, 0.1);
+  --map-hover: rgba(37, 99, 235, 0.1);
 }
 
-/* Prevent a flash of unstyled scrollbar color mismatch during the
-   crossfade; keeps the transition feeling like one smooth dissolve
-   rather than a hard cut. */
+/* Base Body Gradient for Light Mode (hidden behind --bg-primary in Dark Mode) */
+body {
+  background-color: #0A0A0A; /* Default Dark Mode fallback */
+}
+html[data-theme="mono"] body {
+  /* Lowered tone (slightly darker Slate gradient) so text pops clearly */
+  background: linear-gradient(180deg, #F1F5F9 0%, #E2E8F0 50%, #CBD5E1 100%);
+  background-attachment: fixed;
+}
+
 html {
-  transition: background-color 600ms ease;
+  background-color: var(--bg-primary);
+  transition: background-color 300ms ease-in-out;
+}
+
+#app-content {
+  transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
+}
+
+/* =====================================================================
+   Custom Utilities for Contact Section Overhaul
+   ===================================================================== */
+
+.bg-dot-matrix {
+  background-image: radial-gradient(rgba(225, 149, 83, 0.8) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.shine-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.shine-sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.shine-sweep:hover::after {
+  left: 150%;
+}
+
+/* =====================================================================
+   Awwwards Premium Utilities (Animations, Backgrounds, Reveals)
+   ===================================================================== */
+
+/* Star Twinkle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 8px 1px rgba(225, 149, 83, 0.6); }
+}
+.animate-twinkle {
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+/* Better Shooting Star */
+@keyframes shooting-star-anim {
+  0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0; }
+  10% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg); opacity: 0; }
+}
+
+.shooting-star {
+  position: absolute;
+  opacity: 0;
+  animation: shooting-star-anim linear infinite;
+}
+
+.shooting-star-head {
+  width: 3px;
+  height: 3px;
+  background: rgba(250, 217, 97, 0.9);
+  border-radius: 50%;
+  box-shadow: 0 0 6px 1px rgba(250, 217, 97, 0.6), 0 0 12px 3px rgba(225, 149, 83, 0.4);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.shooting-star-tail {
+  width: 85px;
+  height: 1px;
+  background: linear-gradient(to right, rgba(250, 217, 97, 0.7) 0%, transparent 100%);
+  position: absolute;
+  top: 1px;
+  left: 2px;
+}
+
+/* Scroll Reveal Utilities */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-100 { transition-delay: 100ms; }
+.reveal-delay-200 { transition-delay: 200ms; }
+.reveal-delay-300 { transition-delay: 300ms; }
+.reveal-delay-400 { transition-delay: 400ms; }
+.reveal-delay-500 { transition-delay: 500ms; }
+
+.shine-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.shine-sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.shine-sweep:hover::after {
+  left: 150%;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Custom Scrollbar for Resume Viewer and Terminal */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(30, 30, 30, 0.5);
+  border-radius: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(225, 149, 83, 0.4);
+  border-radius: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(225, 149, 83, 0.7);
 }

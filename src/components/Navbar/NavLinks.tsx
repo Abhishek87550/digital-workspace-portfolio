@@ -81,10 +81,10 @@ const NavItem = ({ id, label, isActive, onClick }: NavItemProps) => {
         style={{ x: springX, y: springY }}
         whileHover={{ y: -2 }}
         transition={{ type: "spring", stiffness: 400, damping: 24 }}
-        className={`group relative block overflow-hidden rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D97B66] ${
+        className={`group relative block overflow-hidden rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--nav-active)] ${
           isActive
-            ? "text-[#0A0E17]"
-            : "text-[#F4F1DE]/70 hover:text-[#F4F1DE]"
+            ? "text-[var(--nav-active-text)]"
+            : "text-[var(--nav-text)]/70 hover:text-[var(--nav-text)]"
         }`}
       >
         {/* Circular fill — expands from center on hover, non-active items only */}
@@ -94,7 +94,7 @@ const NavItem = ({ id, label, isActive, onClick }: NavItemProps) => {
             initial={{ scale: 0, opacity: 0 }}
             whileHover={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute inset-0 -z-10 rounded-full bg-white/10 shadow-[0_0_16px_-2px_rgba(244,241,222,0.35)]"
+            className="absolute inset-0 -z-10 rounded-full bg-[var(--nav-text)]/10 shadow-[0_0_16px_-2px_var(--nav-text)]/30"
             style={{ transformOrigin: "center" }}
           />
         )}
@@ -106,7 +106,7 @@ const NavItem = ({ id, label, isActive, onClick }: NavItemProps) => {
             layoutId="nav-active-pill"
             initial={{ scale: 0.85 }}
             animate={{ scale: 1 }}
-            className="absolute inset-0 -z-10 overflow-hidden rounded-full bg-linear-to-r from-[#F0A583] to-[#D9694F] shadow-[0_0_22px_-4px_rgba(217,105,79,0.75)]"
+            className="absolute inset-0 -z-10 overflow-hidden rounded-full bg-[var(--nav-active)] shadow-[0_0_22px_-4px_var(--nav-active)]/75"
             transition={{ type: "spring", stiffness: 420, damping: 22, mass: 0.7 }}
           >
             {/* Diagonal shine sweeping across the active pill on a loop */}
@@ -136,7 +136,7 @@ const NavItem = ({ id, label, isActive, onClick }: NavItemProps) => {
             transition={{ type: "spring", stiffness: 420, damping: 34 }}
           >
             <motion.span
-              className="block h-4px w-4px rounded-full bg-[#0A0E17]/80 shadow-[0_0_10px_2px_rgba(217,105,79,0.7)]"
+              className="block h-4px w-4px rounded-full bg-[var(--bg-primary)]/80 shadow-[0_0_10px_2px_var(--nav-active)]/70"
               animate={{ scale: [1, 1.6, 1], opacity: [0.9, 0.5, 0.9] }}
               transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -154,7 +154,7 @@ const NavLinks = ({ activeId, className = "", onNavigate }: NavLinksProps) => {
     if (!target) return;
 
     const lenis = getLenis();
-    if (lenis) lenis.scrollTo(target, { duration: 1.2, offset: -90 });
+    if (lenis) lenis.scrollTo(target, { duration: 1.2, offset: 0 });
     else target.scrollIntoView({ behavior: "smooth" });
 
     onNavigate?.();

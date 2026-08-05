@@ -22,7 +22,7 @@ import { useFrame } from "@react-three/fiber";
 import { CAMERA_POSITION } from "./constants";
 
 const REFERENCE_ASPECT = 0.82; // roughly the desktop frame's proportions
-const MAX_DOLLY_BACK = 1.55; // how much farther back we'll push the camera at worst-case narrow aspect
+const MAX_DOLLY_BACK = 2.2; // increased to decrease ID card size significantly on mobile
 const DAMPING = 4; // higher = snappier response to resize
 
 function clamp(value: number, min: number, max: number) {

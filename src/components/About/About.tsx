@@ -14,6 +14,7 @@
  * =====================================================================
  */
 
+
 import AboutContent from "./AboutContent";
 import AboutVisual from "./AboutVisual";
 
@@ -22,13 +23,13 @@ const About = () => {
     <section
       id="about"
       aria-label="About"
-      className="relative isolate grid w-full grid-cols-1 gap-12 overflow-hidden bg-[#0A0E17] px-5 py-16 sm:gap-14 sm:px-8 sm:py-20 md:h-screen md:grid-cols-[45%_55%] md:items-center md:gap-10 md:px-14 md:py-0 lg:gap-16 lg:px-20 xl:px-28"
+      className="relative isolate grid w-full grid-cols-1 gap-12 overflow-hidden bg-transparent px-5 py-16 sm:gap-14 sm:px-8 sm:py-20 md:h-screen md:grid-cols-[45%_55%] md:items-center md:gap-10 md:px-14 md:py-0 lg:gap-16 lg:px-20 xl:px-28 transition-colors duration-300"
     >
-      {/* Decorative ambient background glow — purely visual, no layout impact.
-          Confined to the left side only; nothing is rendered on the right. */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[#D9694F]/25 blur-110px sm:h-96 sm:w-96 md:h-28rem md:w-28rem" />
-        <div className="absolute -bottom-16 -left-16 h-56 w-56 rounded-full bg-[#D9694F]/10 blur-[90px] sm:h-72 sm:w-72" />
+      {/* Modern fluid background design (Made static for performance) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -left-24 -top-24 h-96 w-96 rounded-full bg-[var(--about-blob-1)] blur-[120px] md:h-[32rem] md:w-[32rem] opacity-70" />
+        <div className="absolute top-1/2 -right-32 h-[30rem] w-[30rem] -translate-y-1/2 rounded-full bg-[var(--about-blob-2)] blur-[140px] opacity-70" />
+        <div className="absolute -bottom-16 left-1/4 h-80 w-80 rounded-full bg-[var(--about-blob-1)] blur-[120px] opacity-70" />
       </div>
 
       <AboutContent />

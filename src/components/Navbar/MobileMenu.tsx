@@ -22,7 +22,7 @@ const MobileMenu = ({ activeId }: MobileMenuProps) => {
     // kicks in, so the two motions don't visually compete.
     window.setTimeout(() => {
       const lenis = getLenis();
-      if (lenis) lenis.scrollTo(target, { duration: 1.2, offset: -80 });
+      if (lenis) lenis.scrollTo(target, { duration: 1.2, offset: 0 });
       else target.scrollIntoView({ behavior: "smooth" });
     }, 120);
   };
@@ -35,7 +35,7 @@ const MobileMenu = ({ activeId }: MobileMenuProps) => {
         aria-expanded={open}
         aria-controls="mobile-nav-dropdown"
         aria-label={open ? "Close menu" : "Open menu"}
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-[#F4F1DE] backdrop-blur-sm transition-colors duration-300 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D97B66]"
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--nav-border)] bg-[var(--nav-text)]/5 text-[var(--nav-text)] backdrop-blur-sm transition-colors duration-300 hover:bg-[var(--nav-text)]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--nav-active)]"
       >
         {open ? <FiX className="text-lg" /> : <FiMenu className="text-lg" />}
       </button>
@@ -48,7 +48,10 @@ const MobileMenu = ({ activeId }: MobileMenuProps) => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -12, scale: 0.98 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="absolute left-4 right-4 top-[calc(100%+10px)] z-40 overflow-hidden rounded-3xl border border-white/15 bg-[#0A0E17]/90 p-3 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.6)] backdrop-blur-2xl"
+            className="absolute left-4 right-4 top-[calc(100%+10px)] z-40 overflow-hidden rounded-3xl border border-[var(--card-border)] bg-[var(--card-bg)] p-3 shadow-[0_20px_60px_-15px_var(--card-shadow)] backdrop-blur-2xl"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Mobile navigation menu"
           >
             <nav aria-label="Mobile">
               <ul role="list" className="flex flex-col gap-1">
@@ -62,8 +65,8 @@ const MobileMenu = ({ activeId }: MobileMenuProps) => {
                         aria-current={isActive ? "true" : undefined}
                         className={`block rounded-2xl px-4 py-3 text-base font-medium transition-colors duration-200 ${
                           isActive
-                            ? "bg-linear-to-r from-[#F0A583] to-[#D9694F] text-[#0A0E17]"
-                            : "text-[#F4F1DE]/80 hover:bg-white/5 hover:text-[#F4F1DE]"
+                            ? "bg-[var(--nav-active)] text-[var(--bg-primary)]"
+                            : "text-[var(--nav-text)]/80 hover:bg-[var(--nav-text)]/5 hover:text-[var(--nav-text)]"
                         }`}
                       >
                         {item.label}
@@ -74,9 +77,9 @@ const MobileMenu = ({ activeId }: MobileMenuProps) => {
               </ul>
             </nav>
 
-            <div className="mt-3 flex items-center justify-between rounded-2xl border border-white/10 px-4 py-3">
-              <span className="text-sm font-medium text-[#F4F1DE]/70">
-                Monochrome mode
+            <div className="mt-3 flex items-center justify-between rounded-2xl border border-[var(--card-border)] px-4 py-3">
+              <span className="text-sm font-medium text-[var(--nav-text)]/70">
+                Theme
               </span>
               <ThemeToggle />
             </div>

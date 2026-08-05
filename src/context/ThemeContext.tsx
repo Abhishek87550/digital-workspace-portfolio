@@ -6,7 +6,8 @@
  * Deliberately tiny: a single `theme` value ("color" | "mono") stored
  * in React state, mirrored onto `document.documentElement` as
  * `data-theme="mono"` and persisted to localStorage. All the actual
- * visual work happens in CSS (see the `[data-theme="mono"]` rules in
+ * visual work happens in CSS (see the `--color-bg` / `--color-text`
+ * variables and the `html[data-theme="mono"]` override in
  * `index.css`) — this file only owns the *state*, so it can't cause
  * re-renders of the rest of the tree; consumers that don't call
  * `useTheme()` are unaffected by a theme switch.
