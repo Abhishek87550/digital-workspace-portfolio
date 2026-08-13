@@ -3,22 +3,40 @@ import ShootingStars from "../ShootingStars";
 
 const DUMMY_PROJECTS = [
   {
-    title: "E-Commerce Experience",
-    type: "Full-Stack Architecture",
-    description: "A high-performance headless commerce platform featuring real-time inventory synchronization, immersive 3D product previews, and a seamless zero-friction checkout flow.",
-    tech: ["Next.js", "TypeScript", "Three.js", "Stripe"],
-    image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&q=80&w=800",
-    link: "#",
-    github: "#"
+    title: "Campus Companion",
+    type: "UI/UX Case Study",
+    description: "A comprehensive UI/UX case study and design solution aimed at helping new and existing students navigate and engage with their campus more effectively.",
+    tech: ["Figma", "UI/UX", "Prototyping", "User Research"],
+    image: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=800",
+    link: "https://github.com/Abhishek87550/Campus-Companion-",
+    github: "https://github.com/Abhishek87550/Campus-Companion-"
   },
   {
-    title: "FinTech Dashboard",
-    type: "Frontend Engineering",
-    description: "An enterprise-grade financial analytics dashboard built for scale. Handles thousands of concurrent data points with 60fps WebGL charting and granular access controls.",
-    tech: ["React", "GraphQL", "Tailwind", "WebGL"],
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-    link: "#",
-    github: "#"
+    title: "CareConnect",
+    type: "UI/UX Design",
+    description: "A detailed UI/UX report and design for an intuitive appointment booking application tailored for healthcare professionals and patients.",
+    tech: ["Figma", "Healthcare", "Wireframing", "UI Design"],
+    image: "https://images.unsplash.com/photo-1576091160550-2173ff9e5ee5?auto=format&fit=crop&q=80&w=800",
+    link: "https://github.com/Abhishek87550/CareConnect",
+    github: "https://github.com/Abhishek87550/CareConnect"
+  },
+  {
+    title: "Network Routing Simulator",
+    type: "Algorithm Visualizer",
+    description: "An interactive digital platform designed to visualize and demonstrate the 4 core fundamental routing algorithms in Data Structures and Algorithms (DSA).",
+    tech: ["JavaScript", "Algorithms", "DSA", "Visualization"],
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=800",
+    link: "https://github.com/Abhishek87550/Network_Routing_Simulator",
+    github: "https://github.com/Abhishek87550/Network_Routing_Simulator"
+  },
+  {
+    title: "Midas",
+    type: "2D Platformer Game",
+    description: "An engaging 2D platformer game built entirely from scratch using the C programming language and fundamental physics mechanics.",
+    tech: ["C", "Game Development", "Physics Engine"],
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800",
+    link: "https://github.com/Abhishek87550/Midas",
+    github: "https://github.com/Abhishek87550/Midas"
   }
 ];
 

@@ -22,7 +22,8 @@ const Resume = () => {
           </div>
           
           <a
-            href="#"
+            href="/assets/Resume.pdf"
+            download="Abhishek_Sharma_Resume.pdf"
             className="reveal reveal-delay-300 group flex items-center justify-center gap-3 rounded-full border border-[var(--nav-border)] bg-black/40 px-6 py-3 text-sm font-bold tracking-widest text-[var(--text-highlight)] backdrop-blur-md transition-all duration-300 hover:border-[var(--text-highlight)] hover:bg-[#E19553]/10 hover:shadow-[0_0_15px_var(--nav-shadow)]"
           >
             <span>DOWNLOAD PDF</span>
@@ -53,59 +54,13 @@ const Resume = () => {
             className="flex-1 overflow-y-auto overflow-x-hidden p-8 sm:p-12 md:p-16 custom-scrollbar bg-[#2d2d2d] flex justify-center"
           >
             
-            {/* The Document Page (Placeholder) */}
-            <div className="w-full max-w-3xl min-h-[1000px] bg-white rounded-md shadow-2xl p-10 flex flex-col">
-              {/* Dummy Document Content */}
-              <div className="border-b-2 border-gray-800 pb-6 mb-8 text-center">
-                <h1 className="text-4xl font-bold text-gray-900 mb-2">ABHISHEK SHARMA</h1>
-                <p className="text-gray-600 font-medium">B-Tech @ IIT Jodhpur | Software Engineer</p>
-                <div className="flex justify-center gap-4 mt-3 text-sm text-[var(--text-muted)]">
-                  <span>abhishek.dev</span>
-                  <span>|</span>
-                  <span>github.com/abhishek</span>
-                  <span>|</span>
-                  <span>linkedin.com/in/abhishek</span>
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">EDUCATION</h2>
-                <div className="flex justify-between items-start mb-2">
-                  <div>
-                    <h3 className="font-bold text-gray-900">Indian Institute of Technology (IIT) Jodhpur</h3>
-                    <p className="text-gray-600 italic">Bachelor of Technology</p>
-                  </div>
-                  <span className="text-[var(--text-muted)] text-sm font-semibold">2022 - 2026</span>
-                </div>
-              </div>
-
-              <div className="mb-8">
-                <h2 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">EXPERIENCE</h2>
-                <div className="mb-6">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <h3 className="font-bold text-gray-900">Software Development Intern</h3>
-                      <p className="text-gray-600 italic">CyberUltron</p>
-                    </div>
-                    <span className="text-[var(--text-muted)] text-sm font-semibold">2023 - Present</span>
-                  </div>
-                  <ul className="list-disc list-inside text-gray-700 text-sm space-y-2 mt-3">
-                    <li>Engineered high-performance backend microservices utilizing Node.js and scalable cloud infrastructure.</li>
-                    <li>Reduced API response times by 30% through effective database indexing and caching strategies.</li>
-                    <li>Collaborated cross-functionally to define architecture and deliver production-ready features.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div>
-                <h2 className="text-xl font-bold text-gray-800 border-b border-gray-300 pb-2 mb-4">TECHNICAL SKILLS</h2>
-                <div className="text-gray-700 text-sm space-y-2">
-                  <p><span className="font-bold text-gray-900">Languages:</span> C++, Python, JavaScript, TypeScript, SQL</p>
-                  <p><span className="font-bold text-gray-900">Frameworks:</span> React, Next.js, Express, Tailwind CSS</p>
-                  <p><span className="font-bold text-gray-900">Focus Areas:</span> Distributed Systems, Algorithms, High-Performance Scalable Backends</p>
-                </div>
-              </div>
-
+            {/* The Document Page (Embedded PDF) */}
+            <div className="w-full max-w-4xl h-full min-h-[800px] bg-white rounded-md shadow-2xl flex flex-col overflow-hidden">
+              <iframe
+                src="/assets/Resume.pdf"
+                title="Abhishek Sharma Resume"
+                className="w-full h-full min-h-[800px] border-none"
+              />
             </div>
           </div>
         </div>

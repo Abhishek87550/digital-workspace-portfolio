@@ -71,8 +71,8 @@ const AboutContent = () => {
         className="reveal reveal-delay-500 flex flex-col gap-4 pt-2 sm:flex-row sm:flex-wrap sm:items-center"
       >
         <a
-          href="#"
-          download
+          href="/assets/Resume.pdf"
+          download="Abhishek_Sharma_Resume.pdf"
           aria-label="Download resume (PDF)"
           className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-gradient-to-r from-[#8C4F2B] via-[#E19553] to-[#8C4F2B] bg-[length:200%_auto] px-6 py-3 text-sm font-bold tracking-widest text-white shadow-[0_5px_15px_var(--nav-shadow),inset_0_2px_5px_rgba(255,255,255,0.3)] transition-all duration-500 hover:-translate-y-1 hover:bg-[position:right_center] hover:shadow-[0_10px_35px_var(--nav-shadow),inset_0_2px_8px_rgba(255,255,255,0.5)] sm:px-7 sm:py-3.5 sm:text-base"
         >
