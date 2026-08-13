@@ -8,7 +8,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "About", id: "about" },
   { label: "Skills", id: "skills" },
   { label: "Projects", id: "projects" },
-  { label: "Experience", id: "experience" },
   { label: "Achievements", id: "achievements" },
   { label: "Resume", id: "resume" },
   { label: "Contact", id: "contact" },
