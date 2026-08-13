@@ -68,13 +68,11 @@ const Projects = () => {
               className={`reveal reveal-delay-200 group relative grid grid-cols-1 items-center gap-8 md:grid-cols-12 md:gap-12`}
             >
               {/* Image Container */}
-              <div className={`relative h-[300px] md:h-[450px] w-full overflow-hidden rounded-3xl border border-[var(--nav-border)] shadow-[0_15px_40px_rgba(0,0,0,0.6),inset_0_0_20px_var(--nav-shadow)] md:col-span-7 transition-all duration-700 group-hover:border-[var(--nav-border)] group-hover:shadow-[0_25px_50px_var(--nav-shadow)] ${index % 2 !== 0 ? 'md:order-2 md:col-start-6' : ''}`}>
-                <div className="absolute inset-0 bg-black/40 z-10 transition-opacity duration-500 group-hover:opacity-0" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,black_100%)] z-10 opacity-60" />
+              <div className={`relative h-[300px] md:h-[450px] w-full overflow-hidden rounded-3xl border border-[var(--nav-border)] shadow-[0_15px_40px_rgba(0,0,0,0.6)] md:col-span-7 transition-all duration-700 group-hover:border-[var(--text-highlight)] ${index % 2 !== 0 ? 'md:order-2 md:col-start-6' : ''}`}>
                 <img 
                   src={project.image} 
                   alt={project.title} 
-                  className="h-full w-full object-cover filter contrast-125 saturate-50 sepia-[20%] transition-transform duration-700 group-hover:scale-105 group-hover:saturate-100"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
 
